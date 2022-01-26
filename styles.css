@@ -1,6 +1,8 @@
 .container {
   width: max(50%, 400px);
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
 }
 .table__header {
   display: flex;
@@ -23,6 +25,7 @@
   justify-content: space-around;
   margin-bottom: 0.5rem;
   position: relative;
+  
 }
 .table__row td{
   flex: 1;
@@ -30,7 +33,6 @@
   background-color: rgb(188, 237, 243);
   padding: 0.4rem; 
   height: 32px;
-  max-width: 415px;
   border-radius: 6px;
   overflow: hidden; /* Обрезаем содержимое */
   display: flex;
@@ -74,4 +76,21 @@
 }
 .form__submit:active{
   background-color: rgb(255, 117, 117);
+}
+.block {
+  width: 150px;
+  display: flex;
+  margin: 0 auto;
+  }
+.pb {
+  margin-right: 10px;
+  background-color: rgb(144, 212, 221);
+  border: 0;
+  border-radius: 6px;
+  padding: 8px;
+  padding-left: 9px;
+}
+.pb:hover{
+  background-color: rgb(178, 235, 232);
+  cursor: pointer;
 }
