@@ -3,12 +3,6 @@
     tableMaker(JSONdata);
 })();
 
-const colorMap = {
-  blue: 'blue',
-  brown: 'brown',
-  green: 'green',
-  red: 'red'
-}
 const header = document.querySelector('.table__header');
 const sortName = header.firstElementChild
 const sortPhone = header.firstElementChild.nextElementSibling
@@ -24,9 +18,6 @@ const pagDiv = document.createElement('tbody')
 const pagContainer = document.querySelector('.container')
 const imgArrowUp = document.createElement("IMG");
 imgArrowUp.src = "/arrow_up.png"
-const imgArrowDown = document.createElement("IMG");
-imgArrowDown.src = "/arrow_down.png"
-
 
 edit.classList.add('table__edit')
 const nameEdit = document.createElement('input')
@@ -96,9 +87,7 @@ function tableMaker(data)
           newRow.appendChild(i)
         }
         collection.push(newRow)
-       
     }
-    
     const tfoot = document.querySelector('tfoot')
     tfoot.appendChild(scopeBlock)
 
@@ -115,7 +104,6 @@ function tableMaker(data)
     
     function addRow ([result])
     {
-      
       for (let i of result){
         let newRow = i.cloneNode(true)
         newRow.addEventListener('click', function adder(event)
@@ -202,15 +190,13 @@ function tableMaker(data)
 })
 
 Array.from(scopeBlock.childNodes).map((item, index) => {
-  item.addEventListener('click', (event)=> {
-    for (let i of collection){
-      if (i.childNodes[index].classList.value.indexOf('hidden') == 0) 
-      {
-        i.childNodes[index].classList.remove('hidden')
-
-      } else {
-      i.childNodes[index].classList.add('hidden')
-    }
+  item.addEventListener('click', ()=> {
+    for (let i of pagDiv.childNodes){
+      if (i.querySelectorAll('td')[index].style.visibility=="hidden"){
+        i.querySelectorAll('td')[index].style.visibility= 'visible'
+      }else{
+     i.querySelectorAll('td')[index].style.visibility="hidden"
+      }
     }
   })
 })

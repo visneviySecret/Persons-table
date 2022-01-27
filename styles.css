@@ -107,30 +107,3 @@
   border-radius: 6px;
   cursor: pointer;
 }
-.hidden{
-  visibility: hidden;
-}
-.wrapper__checkbox{
-  display: none;
-}
-.wrapper__button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #fff;
-  cursor: pointer; 
-}
-.wrapper_button-line{
-  display: block;
-  width: 30px;
-  height: 3px;
-  border-radius: 5px;
-  background-color: #000;
-  margin: 2px 0;
-  position: relative;
-  transition: all .1s linear 0.2s
-}
