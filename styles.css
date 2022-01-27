@@ -77,7 +77,7 @@
 .form__submit:active{
   background-color: rgb(255, 117, 117);
 }
-.block {
+.pagging {
   width: 150px;
   display: flex;
   margin: 0 auto;
@@ -93,4 +93,44 @@
 .pb:hover{
   background-color: rgb(178, 235, 232);
   cursor: pointer;
+}
+.table__scope-block{
+  display: flex; 
+  width: 100%;
+  margin: 0 auto;
+  justify-content: space-around;
+  margin-bottom: 5px;
+}
+.table__scope{
+  width: 20px;
+  background-color: rgb(190, 230, 233);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.hidden{
+  visibility: hidden;
+}
+.wrapper__checkbox{
+  display: none;
+}
+.wrapper__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer; 
+}
+.wrapper_button-line{
+  display: block;
+  width: 30px;
+  height: 3px;
+  border-radius: 5px;
+  background-color: #000;
+  margin: 2px 0;
+  position: relative;
+  transition: all .1s linear 0.2s
 }

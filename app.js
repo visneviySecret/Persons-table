@@ -3,6 +3,12 @@
     tableMaker(JSONdata);
 })();
 
+const colorMap = {
+  blue: 'blue',
+  brown: 'brown',
+  green: 'green',
+  red: 'red'
+}
 const header = document.querySelector('.table__header');
 const sortName = header.firstElementChild
 const sortPhone = header.firstElementChild.nextElementSibling
@@ -11,11 +17,15 @@ const sortEyeColor = header.firstElementChild.nextElementSibling.nextElementSibl
 const table = document.querySelector('#table')
 const tbody = document.getElementById('table').getElementsByTagName("TBODY")[0]
 const edit = document.createElement('div')
-const collection = []
+let collection = []
 const quantityOfSection = 10
 const numberOfButton = 5
 const pagDiv = document.createElement('tbody')
 const pagContainer = document.querySelector('.container')
+const imgArrowUp = document.createElement("IMG");
+imgArrowUp.src = "/arrow_up.png"
+const imgArrowDown = document.createElement("IMG");
+imgArrowDown.src = "/arrow_down.png"
 
 
 edit.classList.add('table__edit')
@@ -29,6 +39,11 @@ submitButton.classList.add('form__submit')
 submitButton.textContent = 'Submit changing'
 submitButton.type = 'submit'
 
+const scopeBlock = document.createElement('div')
+scopeBlock.classList.add('table__scope-block')
+scopeBlock.innerHTML = paintScopeButton()
+
+
 for (let i of [nameEdit, phoneEdit, aboutEdit, eyeColorEdit]){
   i.classList.add('form__edit')
   edit.appendChild(i)
@@ -36,22 +51,28 @@ for (let i of [nameEdit, phoneEdit, aboutEdit, eyeColorEdit]){
 edit.appendChild(submitButton)
 
 function paintPaginationButton(count)
-     {
-      for (i=1, r=""; i <= count; i++){
-        r += `<button class="pb">${i}<button/>`
-      }
-      return r
-    }
+{
+  for (i=1, r=""; i <= count; i++){
+    r += `<button class="pb">${i}<button/>`
+  }
+  return r
+}
 function paintResult (arr)
-    {
-      for (i = 0, r = []; i < arr.length; i++)
-      {
-        let newRow = arr[i]
-        r.push(newRow)
-      }
-      return r
-    }
-
+{
+  for (i = 0, r = []; i < arr.length; i++)
+  {
+    let newRow = arr[i]
+    r.push(newRow)
+  }
+  return r
+}
+function paintScopeButton ()
+{
+  for (i = 0, r=""; i <= 3; i++){
+    r += `<img src="/arrow_up.png" class="table__scope"></img>` 
+  }
+  return r
+}
 function tableMaker(data) 
 {
     for (let content of data){
@@ -64,6 +85,9 @@ function tableMaker(data)
         phone.textContent = content.phone;
         about.textContent = content.about;
         eyeColor.textContent = content.eyeColor;
+        eyeColor.style.backgroundColor = eyeColor.textContent
+        eyeColor.style.color = eyeColor.textContent
+        var columns = [name, phone, about, eyeColor] // создаём массив колонок, чтобы потом менять стили колонок, в соотвествии с тем, что нам нужно скрывать 
     
         let newRow = document.createElement('tr')
         newRow.classList.add('table__row')
@@ -72,15 +96,19 @@ function tableMaker(data)
           newRow.appendChild(i)
         }
         collection.push(newRow)
-        
+       
     }
+    
+    const tfoot = document.querySelector('tfoot')
+    tfoot.appendChild(scopeBlock)
+
     table.firstElementChild.after(pagDiv)
 
-    const block = document.createElement('div')
-    block.classList.add('block')
-    block.innerHTML = paintPaginationButton(numberOfButton)
-    Array.from(block.childNodes).map((child, index) => { if (index % 2 !== 0 ) {block.removeChild(child)}}) //скрипт убирающий ошибку с возникновение дополнительных элементов <button> в пагинации
-    block.firstElementChild.classList.add("active")
+    const pagging = document.createElement('div')
+    pagging.classList.add('pagging')
+    pagging.innerHTML = paintPaginationButton(numberOfButton)
+    Array.from(pagging.childNodes).map((child, index) => { if (index % 2 !== 0 ) {pagging.removeChild(child)}}) //скрипт убирающий ошибку с возникновение дополнительных элементов <button> в пагинации
+    pagging.firstElementChild.classList.add("active")
 
     let result = []
     result.push(paintResult(collection).slice(0, quantityOfSection))
@@ -118,12 +146,11 @@ function tableMaker(data)
             })
         })
         pagDiv.appendChild(newRow)
-        
       }
     }
     addRow(result) //отрисовываем начальное состояние страницы
 
-    pagContainer.appendChild(block) //добавляем блок с кнопками переключения страниц
+    pagContainer.appendChild(pagging) //добавляем блок с кнопками переключения страниц
 
     document.addEventListener('click', function(event)
     {
@@ -141,21 +168,19 @@ function tableMaker(data)
          }
          addRow(result)
 
-         Array.from(block.childNodes).map(item =>
+         Array.from(pagging.childNodes).map(item =>
           {
             if([...item.classList].indexOf('active') === 1) item.classList.remove('active')
-
           })
         event.target.classList.add('active')
         }
    })
    
 }
-
 //сортировка столбцов, подходящая для структуры table
 [sortName, sortPhone, sortAbout, sortEyeColor].map((item, index) => {
   item.addEventListener('click',()=>{
-    let currentPage = document.querySelector('.block')
+    let currentPage = document.querySelector('.pagging')
     currentPage = Array.from(currentPage.childNodes).filter(item => 
         [...item.classList].indexOf('active') === 1
     )
@@ -163,14 +188,29 @@ function tableMaker(data)
     let y = currentPage
     let start = quantityOfSection*(y-1)
     let end = quantityOfSection*y
-    let sortedRows = collection //получаем массив с данными для сортировки
+
+    collection = collection //получаем массив с данными для сортировки
     .slice(0)
-    .sort((rowA, rowB) => rowA.cells[index].innerHTML > rowB.cells[index].innerHTML ? 1 : -1);
+    .sort((rowA, rowB) => rowA.cells[index].innerHTML > rowB.cells[index].innerHTML ? 1 : -1); //сортируем данные
     let result = []
-    result.push(paintResult(sortedRows).slice(start, end))
+    result.push(paintResult(collection).slice(start, end))
     while (pagDiv.firstChild){
       pagDiv.removeChild(pagDiv.firstChild)
     }
-    result.map(item => table.tBodies[0].append(...item))
+    result.map(item => table.tBodies[0].append(...item)) //заполняем тело таблицы выбранными строками
+  })
+})
+
+Array.from(scopeBlock.childNodes).map((item, index) => {
+  item.addEventListener('click', (event)=> {
+    for (let i of collection){
+      if (i.childNodes[index].classList.value.indexOf('hidden') == 0) 
+      {
+        i.childNodes[index].classList.remove('hidden')
+
+      } else {
+      i.childNodes[index].classList.add('hidden')
+    }
+    }
   })
 })
